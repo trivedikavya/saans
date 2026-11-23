@@ -24,8 +24,8 @@ export function PlanSection<T>({
   heading: ReactNode;
   items: T[];
   getKey: (item: T) => string;
-  /** Defaults to the standard subtle-border list item; override for special cases (e.g. the dashed myth-busting hack). */
-  getItemClassName?: (item: T) => string;
+  /** Return undefined to use the standard subtle-border list item; override only for special cases (e.g. the dashed myth-busting hack). */
+  getItemClassName?: (item: T) => string | undefined;
   renderItem: (item: T) => ReactNode;
 }) {
   return (

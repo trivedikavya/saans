@@ -4,6 +4,7 @@ import { jsonError, parseJsonRequest, rateLimitedResponse } from "@/lib/apiError
 import { average24hPm25, buildPlanResponse } from "@/lib/impact";
 import { generateFallbackPlan } from "@/lib/fallbackPlan";
 import { generatePlanNarrative } from "@/lib/gemini";
+import { logError } from "@/lib/logger";
 import { buildPlanCacheKey, getCachedPlan, setCachedPlan } from "@/lib/planCache";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rateLimit";
 import { applySafetyOverrides } from "@/lib/safety";
@@ -85,7 +86,7 @@ export async function POST(request: Request) {
 
   const finalCheck = PlanResponseSchema.safeParse(plan);
   if (!finalCheck.success) {
-    console.error("[api/plan] built plan failed schema validation", finalCheck.error);
+    logError("api/plan", "built plan failed schema validation", finalCheck.error);
     return jsonError("Could not build a valid plan right now. Please try again.", 500);
   }
 

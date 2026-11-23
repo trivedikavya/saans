@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/apiError";
+import { logError } from "@/lib/logger";
 import { searchCities } from "@/lib/openMeteo";
 
 /**
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
     const results = await searchCities(query);
     return NextResponse.json({ results });
   } catch (error) {
-    console.error("[api/geocode] failed", error);
+    logError("api/geocode", "failed", error);
     return jsonError("Could not search for that location right now.", 502);
   }
 }

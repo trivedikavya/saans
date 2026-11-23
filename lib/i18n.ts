@@ -209,6 +209,9 @@ const dictionaries = {
 
 export type TranslationKey = keyof (typeof dictionaries)["en"];
 
+/** Every translation key that exists -- used by tests to verify full per-language coverage, and available for any future translation-coverage tooling. */
+export const TRANSLATION_KEYS = Object.keys(dictionaries.en) as TranslationKey[];
+
 /** Translates `key` for `language`, substituting `{placeholders}` from `vars`. Falls back to English, then the key itself. */
 export function t(language: SupportedLanguage, key: TranslationKey, vars?: Record<string, string | number>): string {
   const template = dictionaries[language]?.[key] ?? dictionaries.en[key] ?? key;

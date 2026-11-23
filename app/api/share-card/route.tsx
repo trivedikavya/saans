@@ -5,6 +5,21 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
+ * Pure parsing/validation of the share-card query params, extracted out of
+ * the GET handler so it has thorough unit-test coverage without needing to
+ * invoke the native-binary-backed image renderer (Satori/Sharp) for every
+ * case -- that renderer is proven separately by a single integration test
+ * plus the Playwright E2E suite, which loads the real generated image in a
+ * browser against the built app.
+ */
+export function parseShareCardParams(url: string): { city: string; usAqi: number } {
+  const { searchParams } = new URL(url);
+  const city = (searchParams.get("city") ?? "Your neighborhood").slice(0, 60);
+  const usAqi = Math.max(0, Math.min(500, Number(searchParams.get("aqi")) || 0));
+  return { city, usAqi };
+}
+
+/**
  * GET /api/share-card?city=..&aqi=..&language=..
  * Generates the shareable "Family Air Card" PNG for Community Mode using
  * Next's built-in `next/og` ImageResponse (Satori), so no native `canvas`
@@ -12,9 +27,7 @@ export const contentType = "image/png";
  * name, AQI number, language) are accepted -- never profile/health data.
  */
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const city = (searchParams.get("city") ?? "Your neighborhood").slice(0, 60);
-  const usAqi = Math.max(0, Math.min(500, Number(searchParams.get("aqi")) || 0));
+  const { city, usAqi } = parseShareCardParams(request.url);
   const band = getAqiBand(usAqi);
 
   return new ImageResponse(

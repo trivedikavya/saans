@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppState } from "@/app/providers";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { StatusMessage } from "@/components/ui/StatusMessage";
 import { useAbortableFetch, useDebouncedValue, useGeolocation } from "@/lib/hooks";
 import { t } from "@/lib/i18n";
 import type { Location } from "@/lib/schemas";
@@ -99,11 +100,7 @@ export function LocationSearch() {
       <Button variant="secondary" className="self-start" onClick={() => geolocation.requestLocation(handleSelect)} disabled={geolocation.loading}>
         {geolocation.loading ? t(language, "locatingNow") : t(language, "useMyLocation")}
       </Button>
-      {geolocation.error && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-          {geolocation.error}
-        </p>
-      )}
+      {geolocation.error && <StatusMessage status="error">{geolocation.error}</StatusMessage>}
     </Card>
   );
 }

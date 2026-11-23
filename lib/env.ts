@@ -8,6 +8,7 @@
  * from server-only code: route handlers and /lib server modules).
  */
 import { z } from "zod";
+import { logError } from "./logger";
 
 const EnvSchema = z.object({
   // An empty string is treated the same as "unset" (see isGeminiConfigured
@@ -37,7 +38,7 @@ function loadEnv(): Env {
     // Fail loudly in server logs, but never throw at import time so a
     // misconfigured deploy still serves the rule-based fallback instead
     // of crashing the whole app.
-    console.error("[env] invalid environment configuration", parsed.error.flatten());
+    logError("env", "invalid environment configuration", parsed.error.flatten());
     return EnvSchema.parse({});
   }
 

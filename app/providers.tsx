@@ -57,7 +57,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
     if (storedLocation) setLocationState(storedLocation);
 
     const storedTheme = window.localStorage.getItem(THEME_KEY) as Theme | null;
-    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+    // `typeof window.matchMedia === "function"` guard (not just `?.()`) because
+    // `window.matchMedia?.(query)` short-circuits to `undefined` when the API is
+    // missing (e.g. jsdom in tests, some restrictive embedded browsers), and
+    // `undefined.matches` would then throw -- this previously crashed on mount
+    // in any environment without matchMedia support.
+    const prefersDark = typeof window.matchMedia === "function" && window.matchMedia("(prefers-color-scheme: dark)").matches;
     const resolvedTheme: Theme = storedTheme ?? (prefersDark ? "dark" : "light");
     setTheme(resolvedTheme);
     applyThemeClass(resolvedTheme);

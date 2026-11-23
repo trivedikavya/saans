@@ -17,6 +17,7 @@
  */
 import { GoogleGenAI, Type, type Schema } from "@google/genai";
 import { env, isGeminiConfigured } from "./env";
+import { logError } from "./logger";
 import { buildSafetyConstraintsPrompt } from "./safety";
 import { GeminiPlanNarrativeSchema, type GeminiPlanNarrative } from "./schemas";
 import type { SupportedLanguage } from "./constants";
@@ -155,7 +156,7 @@ async function requestPlanNarrativeOnce(ctx: PlanGenerationContext): Promise<Gem
     const result = GeminiPlanNarrativeSchema.safeParse(parsed);
     return result.success ? result.data : null;
   } catch (error) {
-    console.error("[gemini] plan generation failed", error);
+    logError("gemini", "plan generation failed", error);
     return null;
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/apiError";
+import { logError } from "@/lib/logger";
 import { getAirQualityResponse } from "@/lib/openMeteo";
 import { LocationSchema } from "@/lib/schemas";
 
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
     const data = await getAirQualityResponse(parsedLocation.data);
     return NextResponse.json(data);
   } catch (error) {
-    console.error("[api/air-quality] failed", error);
+    logError("api/air-quality", "failed", error);
     return jsonError("Could not fetch air quality data right now.", 502);
   }
 }

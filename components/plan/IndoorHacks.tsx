@@ -21,7 +21,7 @@ export function IndoorHacks({ hacks, language }: { hacks: PlanResponse["indoorHa
       heading={t(language, "indoorHacks")}
       items={hacks}
       getKey={(hack) => hack.id}
-      getItemClassName={(hack) => (hack.type === "myth" ? "rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50" : "rounded-lg border border-slate-100 p-3 dark:border-slate-800")}
+      getItemClassName={(hack) => (hack.type === "myth" ? "rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50" : undefined)}
       renderItem={(hack) => (
         <>
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">{TYPE_LABELS[hack.type]}</p>

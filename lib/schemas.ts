@@ -255,14 +255,16 @@ export type PlanResponse = z.infer<typeof PlanResponseSchema>;
 // /api/plan request
 // ---------------------------------------------------------------------------
 
+/** Shared base validation for "current AQI reading" fields, extended by each request schema below that needs one -- keeps the usAqi/pm25 rules defined exactly once. */
+export const AqiReadingSchema = z.object({
+  usAqi: z.number().min(0).max(500),
+  pm25: z.number().min(0),
+});
+
 export const PlanRequestSchema = z.object({
   profile: ProfileSchema,
   location: LocationSchema,
-  aqi: z.object({
-    usAqi: z.number().min(0).max(500),
-    pm25: z.number().min(0),
-    pm10: z.number().min(0),
-  }),
+  aqi: AqiReadingSchema.extend({ pm10: z.number().min(0) }),
   hourly: z.array(HourlyAirPointSchema).min(1).max(72),
   dateISO: z.string(),
 });
@@ -285,10 +287,6 @@ export type ChatMessage = z.infer<typeof ChatMessageSchema>;
 export const ChatRequestSchema = z.object({
   messages: z.array(ChatMessageSchema).min(1).max(20),
   language: SupportedLanguageSchema,
-  aqi: z.object({
-    usAqi: z.number().min(0).max(500),
-    pm25: z.number().min(0),
-    locationName: z.string().min(1).max(120),
-  }),
+  aqi: AqiReadingSchema.extend({ locationName: z.string().min(1).max(120) }),
 });
 export type ChatRequest = z.infer<typeof ChatRequestSchema>;

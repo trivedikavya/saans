@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { __resetStoreForTests } from "@/lib/store";
 import { DEFAULT_PROFILE, PlanResponseSchema } from "@/lib/schemas";
+import { buildHourlyFixture } from "../helpers/fixtures";
 
 // Hoisted mocks so the vi.mock factory below (which Vitest hoists above
 // imports) can reference them.
@@ -34,25 +35,12 @@ const VALID_NARRATIVE = {
   maskGuidanceReasons: [{ memberType: "adult", reason: "Based on today's conditions." }],
 };
 
-function buildHourly() {
-  return Array.from({ length: 24 }, (_, hour) => ({
-    time: `2024-01-15T${String(hour).padStart(2, "0")}:00`,
-    pm25: 120,
-    pm10: 150,
-    usAqi: 180,
-    temperatureC: 14,
-    windSpeedKmh: 4,
-    humidityPercent: 55,
-    boundaryLayerHeightM: 250,
-  }));
-}
-
 function buildRequestBody(overrides: Record<string, unknown> = {}) {
   return {
     profile: DEFAULT_PROFILE,
     location: { name: "Test City", latitude: 28.6, longitude: 77.2 },
     aqi: { usAqi: 180, pm25: 120, pm10: 150 },
-    hourly: buildHourly(),
+    hourly: buildHourlyFixture(120),
     dateISO: "2024-01-15",
     ...overrides,
   };

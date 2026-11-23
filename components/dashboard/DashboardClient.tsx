@@ -14,6 +14,7 @@ import { WhatsAppBrief } from "@/components/community/WhatsAppBrief";
 import { Header } from "@/components/layout/Header";
 import { PlanView } from "@/components/plan/PlanView";
 import { WhatIfSimulator } from "@/components/simulator/WhatIfSimulator";
+import { StatusMessage } from "@/components/ui/StatusMessage";
 import { t } from "@/lib/i18n";
 import { useAirQuality, usePlan } from "@/lib/useDashboardData";
 
@@ -37,17 +38,9 @@ export function DashboardClient() {
       <main id="main-content" className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-8">
         {(!location || aqiState.status !== "success") && <LocationSearch />}
 
-        {location && aqiState.status === "loading" && (
-          <p role="status" aria-live="polite" className="text-sm text-slate-600 dark:text-slate-400">
-            {t(language, "loading")}
-          </p>
-        )}
+        {location && aqiState.status === "loading" && <StatusMessage status="loading">{t(language, "loading")}</StatusMessage>}
 
-        {location && aqiState.status === "error" && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-            {aqiState.message}
-          </p>
-        )}
+        {location && aqiState.status === "error" && <StatusMessage status="error">{aqiState.message}</StatusMessage>}
 
         {aqiState.status === "success" && (
           <>
@@ -55,16 +48,8 @@ export function DashboardClient() {
             <LocationSearch />
             <ForecastChart hourly={aqiState.data.hourly} />
 
-            {planState.status === "loading" && (
-              <p role="status" aria-live="polite" className="text-sm text-slate-600 dark:text-slate-400">
-                {t(language, "generatingPlan")}
-              </p>
-            )}
-            {planState.status === "error" && (
-              <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-                {planState.message}
-              </p>
-            )}
+            {planState.status === "loading" && <StatusMessage status="loading">{t(language, "generatingPlan")}</StatusMessage>}
+            {planState.status === "error" && <StatusMessage status="error">{planState.message}</StatusMessage>}
             {planState.status === "success" && (
               <>
                 <PlanView plan={planState.data} language={language} />

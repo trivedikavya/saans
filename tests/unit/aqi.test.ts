@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { AQI_BANDS } from "@/lib/constants";
 import { findBestOutdoorWindow, getAqiBand, getMaskGuidance, isOutdoorExertionUnsafe, shouldStayIndoors } from "@/lib/aqi";
+import { buildHourlyFixture } from "../helpers/fixtures";
 
 describe("getAqiBand", () => {
   it("classifies boundary values into the correct EPA band", () => {
@@ -20,6 +22,14 @@ describe("getAqiBand", () => {
   it("clamps out-of-range values instead of throwing", () => {
     expect(getAqiBand(-10).key).toBe("good");
     expect(getAqiBand(9999).key).toBe("hazardous");
+  });
+
+  it("maps every integer AQI from 0 to 500 to exactly one band, with no gaps or overlaps", () => {
+    for (let aqi = 0; aqi <= 500; aqi++) {
+      const matchingBands = AQI_BANDS.filter((band) => aqi >= band.range[0] && aqi <= band.range[1]);
+      expect(matchingBands, `AQI ${aqi} should match exactly one band`).toHaveLength(1);
+      expect(getAqiBand(aqi).key).toBe(matchingBands[0]!.key);
+    }
   });
 });
 
@@ -53,21 +63,13 @@ describe("getMaskGuidance", () => {
 });
 
 describe("findBestOutdoorWindow", () => {
-  function buildHourly(pm25ByHour: number[], dateStr = "2024-01-15"): { time: string; pm25: number; usAqi: number }[] {
-    return pm25ByHour.map((pm25, hour) => ({
-      time: `${dateStr}T${String(hour).padStart(2, "0")}:00`,
-      pm25,
-      usAqi: pm25 * 2, // simplified proportional proxy for the test fixture
-    }));
-  }
-
   it("picks the awake-hours window with the lowest average AQI", () => {
     const pm = new Array(24).fill(100);
     // Make hours 6-9 the cleanest block.
     pm[6] = 10;
     pm[7] = 12;
     pm[8] = 11;
-    const hourly = buildHourly(pm);
+    const hourly = buildHourlyFixture(pm);
 
     const result = findBestOutdoorWindow(hourly, { windowLengthHours: 3 });
     expect(result.startHour).toBe(6);
@@ -77,7 +79,7 @@ describe("findBestOutdoorWindow", () => {
 
   it("flags noSafeWindow when even the best block is above the unsafe-exertion threshold", () => {
     const pm = new Array(24).fill(250); // usAqi = 500 everywhere -> always unsafe
-    const hourly = buildHourly(pm);
+    const hourly = buildHourlyFixture(pm);
 
     const result = findBestOutdoorWindow(hourly, { windowLengthHours: 3 });
     expect(result.noSafeWindow).toBe(true);
@@ -86,7 +88,7 @@ describe("findBestOutdoorWindow", () => {
   it("only considers awake hours (05:00-22:00) as candidate windows", () => {
     const pm = new Array(24).fill(100);
     pm[2] = 1; // extremely clean at 2am, should be ignored
-    const hourly = buildHourly(pm);
+    const hourly = buildHourlyFixture(pm);
 
     const result = findBestOutdoorWindow(hourly, { windowLengthHours: 2 });
     expect(result.startHour).toBeGreaterThanOrEqual(5);

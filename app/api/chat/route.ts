@@ -2,6 +2,7 @@ import { getMedicalRedirectMessage, isMedicalQuery } from "@/lib/chatGuard";
 import { jsonError, parseJsonRequest, rateLimitedResponse } from "@/lib/apiError";
 import { isGeminiConfigured } from "@/lib/env";
 import { streamChatReply } from "@/lib/gemini";
+import { logError } from "@/lib/logger";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rateLimit";
 import { ChatRequestSchema } from "@/lib/schemas";
 
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
           controller.enqueue(encoder.encode(chunk));
         }
       } catch (error) {
-        console.error("[api/chat] stream failed mid-flight", error);
+        logError("api/chat", "stream failed mid-flight", error);
         controller.enqueue(encoder.encode(`\n\n${FALLBACK_REPLY[language] ?? FALLBACK_REPLY.en}`));
       } finally {
         controller.close();

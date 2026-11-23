@@ -52,15 +52,21 @@ export default function WhatIfSimulatorInner({ pm25, commuteMode, commuteDistanc
         </div>
         <div>
           <dt className="text-slate-600 dark:text-slate-400">{t(language, "simulatorResultCigs")}</dt>
-          <dd className="text-lg font-bold text-slate-900 dark:text-white">{result.cigaretteEquivalents.toFixed(2)}</dd>
+          <dd data-testid="simulator-cigarette-equivalents" className="text-lg font-bold text-slate-900 dark:text-white">
+            {result.cigaretteEquivalents.toFixed(2)}
+          </dd>
         </div>
         <div>
           <dt className="text-slate-600 dark:text-slate-400">{t(language, "simulatorResultCo2e")}</dt>
-          <dd className="text-lg font-bold text-slate-900 dark:text-white">{result.co2eGramsAvoided.toFixed(0)}g</dd>
+          <dd data-testid="simulator-co2e-avoided" className="text-lg font-bold text-slate-900 dark:text-white">
+            {result.co2eGramsAvoided.toFixed(0)}g
+          </dd>
         </div>
         <div>
           <dt className="text-slate-600 dark:text-slate-400">{t(language, "simulatorResultPm")}</dt>
-          <dd className="text-lg font-bold text-slate-900 dark:text-white">{result.pmGramsAvoided.toFixed(2)}g</dd>
+          <dd data-testid="simulator-pm-avoided" className="text-lg font-bold text-slate-900 dark:text-white">
+            {result.pmGramsAvoided.toFixed(2)}g
+          </dd>
         </div>
       </dl>
       <p className="text-xs text-slate-600 dark:text-slate-400">{t(language, "cigaretteEquivalentNote")}</p>

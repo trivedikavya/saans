@@ -1,20 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { buildPlanResponse } from "@/lib/impact";
 import { generateFallbackPlan } from "@/lib/fallbackPlan";
-import { DEFAULT_PROFILE, PlanResponseSchema, type HourlyAirPointData } from "@/lib/schemas";
-
-function buildHourly(pm25: number, hours = 24): HourlyAirPointData[] {
-  return Array.from({ length: hours }, (_, hour) => ({
-    time: `2024-01-15T${String(hour % 24).padStart(2, "0")}:00`,
-    pm25,
-    pm10: pm25 * 1.3,
-    usAqi: pm25 * 2,
-    temperatureC: 15,
-    windSpeedKmh: 5,
-    humidityPercent: 55,
-    boundaryLayerHeightM: 400,
-  }));
-}
+import { DEFAULT_PROFILE, PlanResponseSchema } from "@/lib/schemas";
+import { buildHourlyFixture as buildHourly } from "../helpers/fixtures";
 
 describe("buildPlanResponse", () => {
   it("produces output that satisfies the full PlanResponseSchema", () => {
