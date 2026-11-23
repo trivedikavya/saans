@@ -1,5 +1,6 @@
 "use client";
 
+/** Top nav shown on the onboarding and dashboard routes: app name, edit-profile link, language switcher, theme toggle. */
 import Link from "next/link";
 import { useAppState } from "@/app/providers";
 import { t } from "@/lib/i18n";

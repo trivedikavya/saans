@@ -1,5 +1,6 @@
 "use client";
 
+/** Switches the profile's language (en/hi/gu); updates both the stored profile and <html lang> (see app/providers.tsx). */
 import { useAppState } from "@/app/providers";
 import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES } from "@/lib/constants";
 import { t } from "@/lib/i18n";

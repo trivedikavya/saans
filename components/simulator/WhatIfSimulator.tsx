@@ -1,5 +1,6 @@
 "use client";
 
+/** Lazy-loading wrapper for the What-If simulator -- see WhatIfSimulatorInner.tsx for the actual UI/logic. */
 import dynamic from "next/dynamic";
 import type { SupportedLanguage } from "@/lib/constants";
 

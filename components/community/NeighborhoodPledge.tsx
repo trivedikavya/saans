@@ -1,6 +1,8 @@
 "use client";
 
+/** Community Mode: a locally-stored neighborhood pledge checklist with a running CO2e/PM impact counter. */
 import { useEffect, useState } from "react";
+import { Card, CardHeading } from "@/components/ui/Card";
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";
 import { PLEDGE_ITEMS, sumPledgeImpact } from "@/lib/pledge";
@@ -26,10 +28,10 @@ export function NeighborhoodPledge({ language }: { language: SupportedLanguage }
   const totals = sumPledgeImpact(checked);
 
   return (
-    <section aria-labelledby="pledge-heading" className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h3 id="pledge-heading" className="text-sm font-semibold text-slate-900 dark:text-white">
+    <Card as="section" aria-labelledby="pledge-heading">
+      <CardHeading as="h3" id="pledge-heading">
         {t(language, "pledgeTitle")}
-      </h3>
+      </CardHeading>
       <p aria-live="polite" className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
         {t(language, "pledgeCounter", { count: checked.length, total: PLEDGE_ITEMS.length })} &middot; {Math.round(totals.co2eGramsAvoidedPerDay)}g CO2e &middot; {totals.pmGramsAvoidedPerDay.toFixed(2)}g PM avoided/day
       </p>
@@ -43,6 +45,6 @@ export function NeighborhoodPledge({ language }: { language: SupportedLanguage }
           </li>
         ))}
       </ul>
-    </section>
+    </Card>
   );
 }

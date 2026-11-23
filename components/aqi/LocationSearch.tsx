@@ -1,7 +1,10 @@
 "use client";
 
+/** City search (debounced, abortable) + "use my current location" geolocation button. */
 import { useEffect, useState } from "react";
 import { useAppState } from "@/app/providers";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { useAbortableFetch, useDebouncedValue, useGeolocation } from "@/lib/hooks";
 import { t } from "@/lib/i18n";
 import type { Location } from "@/lib/schemas";
@@ -58,7 +61,7 @@ export function LocationSearch() {
   }
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+    <Card>
       <div className="flex flex-col gap-1">
         <label htmlFor="city-search" className="text-sm font-medium text-slate-700 dark:text-slate-200">
           {t(language, "locationSearchLabel")}
@@ -93,19 +96,14 @@ export function LocationSearch() {
         </ul>
       )}
 
-      <button
-        type="button"
-        onClick={() => geolocation.requestLocation(handleSelect)}
-        disabled={geolocation.loading}
-        className="self-start rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-      >
+      <Button variant="secondary" className="self-start" onClick={() => geolocation.requestLocation(handleSelect)} disabled={geolocation.loading}>
         {geolocation.loading ? t(language, "locatingNow") : t(language, "useMyLocation")}
-      </button>
+      </Button>
       {geolocation.error && (
         <p role="alert" className="text-sm text-red-600 dark:text-red-400">
           {geolocation.error}
         </p>
       )}
-    </div>
+    </Card>
   );
 }

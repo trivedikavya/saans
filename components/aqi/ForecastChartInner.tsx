@@ -1,5 +1,6 @@
 "use client";
 
+/** The actual Recharts line chart, code-split out of ForecastChart.tsx (see the `next/dynamic` import there) so Recharts never ships in the initial bundle. */
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { HourlyAirPointData } from "@/lib/schemas";
 

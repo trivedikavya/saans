@@ -1,6 +1,9 @@
 "use client";
 
+/** "Ask Saans" -- the streaming follow-up chat, grounded in the household's current AQI/location. */
 import { useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Card, CardHeading } from "@/components/ui/Card";
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";
 
@@ -66,10 +69,8 @@ export function AskSaans({ usAqi, pm25, locationName, language }: { usAqi: numbe
   }
 
   return (
-    <section aria-labelledby="ask-saans-heading" className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h2 id="ask-saans-heading" className="text-base font-semibold text-slate-900 dark:text-white">
-        {t(language, "chatTitle")}
-      </h2>
+    <Card as="section" aria-labelledby="ask-saans-heading">
+      <CardHeading id="ask-saans-heading">{t(language, "chatTitle")}</CardHeading>
 
       <ul aria-live="polite" aria-label="Conversation" className="flex max-h-80 flex-col gap-2 overflow-y-auto">
         {turns.map((turn, i) => (
@@ -96,11 +97,11 @@ export function AskSaans({ usAqi, pm25, locationName, language }: { usAqi: numbe
           placeholder={t(language, "chatPlaceholder")}
           className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-950"
         />
-        <button type="submit" disabled={sending || !input.trim()} className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">
+        <Button type="submit" disabled={sending || !input.trim()}>
           {t(language, "chatSend")}
-        </button>
+        </Button>
       </form>
       <p className="text-xs text-slate-600 dark:text-slate-400">{t(language, "chatDisclaimer")}</p>
-    </section>
+    </Card>
   );
 }

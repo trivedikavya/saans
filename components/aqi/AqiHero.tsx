@@ -1,3 +1,4 @@
+/** The color-coded AQI hero: current band, raw AQI number, PM2.5/PM10/weather stats, and the Open-Meteo data/time attribution. */
 import { getAqiBand } from "@/lib/aqi";
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";

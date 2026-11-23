@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * App-wide client state: the lifestyle profile/location (hydrated from and
+ * persisted to localStorage only -- see lib/storage.ts) and the dark/light
+ * theme. Lives in one context so every client component can read/update
+ * either without prop-drilling through the page tree.
+ */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { LANGUAGE_BCP47, type SupportedLanguage } from "@/lib/constants";
 import { getStoredLocation, getStoredProfile, setStoredLocation, setStoredProfile } from "@/lib/storage";

@@ -1,7 +1,9 @@
 "use client";
 
+/** Landing page: the problem-statement pitch plus "Get started" (real onboarding) and "Try demo" (seeds a demo profile/location, skipping onboarding entirely). */
 import { useRouter } from "next/navigation";
 import { useAppState } from "@/app/providers";
+import { Button } from "@/components/ui/Button";
 import { DEFAULT_PROFILE } from "@/lib/schemas";
 
 const DEMO_LOCATION = { name: "New Delhi, India", latitude: 28.6139, longitude: 77.209 };
@@ -31,16 +33,12 @@ export function HomeLanding() {
       </div>
 
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <button type="button" onClick={handleGetStarted} className="rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white hover:bg-blue-700">
+        <Button size="lg" onClick={handleGetStarted}>
           Get started
-        </button>
-        <button
-          type="button"
-          onClick={handleTryDemo}
-          className="rounded-full border border-slate-300 px-6 py-3 text-base font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
+        </Button>
+        <Button variant="secondary" size="lg" onClick={handleTryDemo}>
           Try demo: New Delhi, high AQI
-        </button>
+        </Button>
       </div>
 
       <p className="text-xs text-slate-600 dark:text-slate-400">No account or API key required to try the demo. All lifestyle data stays on your device.</p>

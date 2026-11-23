@@ -1,8 +1,10 @@
 "use client";
 
+/** The 5-step onboarding wizard (household, commute, home, cooking/heating, language); writes the finished profile to localStorage only on "Finish". */
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAppState } from "@/app/providers";
+import { Button } from "@/components/ui/Button";
 import { t } from "@/lib/i18n";
 import { DEFAULT_PROFILE, type Profile } from "@/lib/schemas";
 import { StepCommute } from "./steps/StepCommute";
@@ -64,17 +66,10 @@ export function OnboardingWizard() {
         {step === 5 && <StepLanguage profile={profile} onChange={patch} />}
 
         <div className="flex items-center justify-between pt-2">
-          <button
-            type="button"
-            onClick={() => setStep((s) => Math.max(1, s - 1))}
-            disabled={step === 1}
-            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 disabled:opacity-40 dark:border-slate-600 dark:text-slate-200"
-          >
+          <Button type="button" variant="secondary" onClick={() => setStep((s) => Math.max(1, s - 1))} disabled={step === 1}>
             {t(language, "back")}
-          </button>
-          <button type="submit" className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-            {step < TOTAL_STEPS ? t(language, "next") : t(language, "finish")}
-          </button>
+          </Button>
+          <Button type="submit">{step < TOTAL_STEPS ? t(language, "next") : t(language, "finish")}</Button>
         </div>
       </form>
     </main>

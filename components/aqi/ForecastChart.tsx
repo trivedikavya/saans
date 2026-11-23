@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useId, useState } from "react";
+import { Card, CardHeading } from "@/components/ui/Card";
 import type { HourlyAirPointData } from "@/lib/schemas";
 
 // Recharts is lazy-loaded (code-split) since it's only needed once the
@@ -20,10 +21,8 @@ export function ForecastChart({ hourly }: { hourly: HourlyAirPointData[] }) {
   const maxAqi = Math.max(...next24.map((p) => p.usAqi));
 
   return (
-    <section aria-labelledby="forecast-heading" className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h2 id="forecast-heading" className="text-base font-semibold text-slate-900 dark:text-white">
-        48-hour forecast
-      </h2>
+    <Card as="section" aria-labelledby="forecast-heading">
+      <CardHeading id="forecast-heading">48-hour forecast</CardHeading>
       <p id={descriptionId} className="text-sm text-slate-600 dark:text-slate-400">
         Over the next 24 hours, US AQI ranges from {Math.round(minAqi)} to {Math.round(maxAqi)}. Line chart of hourly US AQI (blue) and PM2.5 (red); use the data table below for exact values.
       </p>
@@ -70,6 +69,6 @@ export function ForecastChart({ hourly }: { hourly: HourlyAirPointData[] }) {
           </table>
         </div>
       )}
-    </section>
+    </Card>
   );
 }

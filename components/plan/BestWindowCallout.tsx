@@ -1,3 +1,4 @@
+/** Displays the deterministically-computed "best outdoor window" (see lib/aqi.ts findBestOutdoorWindow) and the LLM's plain-language explanation of it. */
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";
 import type { PlanResponse } from "@/lib/schemas";

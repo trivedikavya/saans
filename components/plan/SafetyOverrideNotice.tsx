@@ -1,3 +1,4 @@
+/** Transparently surfaces any deterministic safety-layer overrides (lib/safety.ts) applied to the Gemini/fallback output, instead of silently rewriting text. */
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";
 import type { PlanResponse } from "@/lib/schemas";

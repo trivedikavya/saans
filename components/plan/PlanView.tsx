@@ -1,3 +1,4 @@
+/** Composes the full daily plan: offline badge, safety-override notice, best window, routine tweaks, indoor hacks, sustainable alternatives, mask guidance, and the disclaimer. */
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";
 import type { PlanResponse } from "@/lib/schemas";

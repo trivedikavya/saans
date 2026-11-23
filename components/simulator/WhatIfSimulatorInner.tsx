@@ -1,6 +1,8 @@
 "use client";
 
+/** The What-If simulator: pure client-side (no network) recompute of exposure/emissions impact as toggles flip. */
 import { useMemo, useState } from "react";
+import { Card, CardHeading } from "@/components/ui/Card";
 import { t } from "@/lib/i18n";
 import type { SupportedLanguage } from "@/lib/constants";
 import { DEFAULT_SIMULATOR_TOGGLES, simulateImpact, type SimulatorToggles } from "@/lib/simulator";
@@ -29,10 +31,8 @@ export default function WhatIfSimulatorInner({ pm25, commuteMode, commuteDistanc
   }
 
   return (
-    <section aria-labelledby="simulator-heading" className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h2 id="simulator-heading" className="text-base font-semibold text-slate-900 dark:text-white">
-        {t(language, "simulatorTitle")}
-      </h2>
+    <Card as="section" aria-labelledby="simulator-heading">
+      <CardHeading id="simulator-heading">{t(language, "simulatorTitle")}</CardHeading>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {TOGGLE_KEYS.map(({ key, labelKey }) => (
@@ -64,6 +64,6 @@ export default function WhatIfSimulatorInner({ pm25, commuteMode, commuteDistanc
         </div>
       </dl>
       <p className="text-xs text-slate-600 dark:text-slate-400">{t(language, "cigaretteEquivalentNote")}</p>
-    </section>
+    </Card>
   );
 }
